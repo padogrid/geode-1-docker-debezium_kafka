@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+. $SCRIPT_DIR/.addonenv.sh
+
+EXECUTABLE="`basename $0`"
+
+if [ "$HELP" == "true" ]; then
+   echo "Usage:"
+   echo "   ./$EXECUTABLE [-clean] [-?]"
+   echo ""
+   echo "   Builds the Debezium demo data jar and copies the Geode/GemFire jar files to the"
+   echo "   'geode-addon' directory which is mounted by the Docker Geode/GemFire connector container."
+   echo ""
+   echo "      $APP_DIR/geode-addon/plugins/debezium-demo-data-1.0-SNAPSHOT.jar"
+   echo ""
+   echo "Default: ./$EXECUTABLE"
+   echo ""
+   exit
+fi
+
+pushd $APP_DIR > /dev/null
+
+# Build debezium-demo-data-1.0-SNAPSHOT.jar
+mvn package clean package
+
+# Copy the geode and geode-addon jar files
+if [ ! -d geode-addon/lib ]; then
+   mkdir -p geode-addon/lib
+fi
+if [ ! -d geode-addon/plugins ]; then
+   mkdir -p geode-addon/plugins
+fi
+if [ ! -d geode-addon/log ]; then
+   mkdir -p geode-addon/log
+fi
+if [ ! -d geode-addon/etc ]; then
+   mkdir -p geode-addon/etc
+fi
+if [ ! -d etc ]; then
+   mkdir etc
+fi
+
+cp -r $GEODE_HOME/lib geode-addon/
+cp $GEODE_ADDON_HOME/lib/geode-addon-core*.jar geode-addon/lib/
+cp $GEODE_ADDON_HOME/plugins/geode-addon-core*.jar geode-addon/plugins/
+cp $GEODE_ADDON_HOME/etc/template-log4j2.properties etc/log4j2.properties
+
+popd > /dev/null
+
+#
+# Display build information
+#
+echo ""
+echo "Workspace: $GEODE_ADDON_WORKSPACE"
+echo ""
+echo "Build complete"
+echo ""
+echo "   $APP_DIR/geode-addon/plugins/debezium-demo-data-1.0-SNAPSHOT.jar"
+echo ""

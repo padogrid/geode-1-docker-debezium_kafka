@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+. $SCRIPT_DIR/.addonenv.sh
+
+EXECUTABLE="`basename $0`"
+
+export LOG_FILE=$APP_LOG_DIR/$EXECUTABLE.log
+
+JAVA_OPTS="-Dexecutable.name=$EXECUTABLE $JAVA_OPTS"
+"$JAVA" $JAVA_OPTS org.apache.geode.addon.demo.CacheRead $@

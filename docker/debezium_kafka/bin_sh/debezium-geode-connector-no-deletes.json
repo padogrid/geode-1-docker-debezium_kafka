@@ -1,0 +1,22 @@
+{
+    "name": "debezium-geode-sink",
+    "config": {
+        "connector.class": "org.apache.geode.addon.kafka.debezium.DebeziumKafkaSinkConnector",
+        "tasks.max": "1",
+        "topics": "customers",
+        "transforms": "unwrap",
+        "transforms.unwrap.type": "io.debezium.transforms.UnwrapFromEnvelope",
+        "gemfirePropertyFile": "/geode-addon/etc/client-gemfire.properties",
+        "gemfire.cache-xml-file": "/geode-addon/etc/client-cache.xml",
+        "region": "/inventory/customers",
+        "smt.enabled": true,
+        "debug.enabled": false,
+        "delete.enabled": true,
+        "key.class": "java.lang.String",
+        "key.column.names": "id",
+        "key.field.names": "id",
+        "value.class": "org.apache.geode.addon.demo.debezium.data.Customer",
+        "value.column.names": "id, first_name, last_name, email",
+        "value.field.names": "id, firstName, lastName, email"
+     }
+}

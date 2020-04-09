@@ -1,0 +1,31 @@
+<?xml	version="1.0"	encoding="UTF-8"?>
+<client-cache xmlns="http://geode.apache.org/schema/cache"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://geode.apache.org/schema/cache
+		http://geode.apache.org/schema/cache/cache-1.0.xsd"
+	version="1.0">
+	<pool name="serverPool">
+		 <locator host="host.docker.internal" port="10334" />
+	</pool>
+	<region-attributes id="clientAttributes" 
+		pool-name="serverPool" refid="PROXY" />
+	
+	<!-- Regions used by test_ingestion and test_tx -->
+	<region name="inventory">
+		<region name="customers">
+			<region-attributes refid="clientAttributes" />
+		</region>
+		<region name="orders">
+			<region-attributes refid="clientAttributes" />
+		</region>
+		<region name="addresses">
+			<region-attributes refid="clientAttributes" />
+		</region>
+		<region name="products">
+			<region-attributes refid="clientAttributes" />
+		</region>
+		<region name="product_on_hand">
+			<region-attributes refid="clientAttributes" />
+		</region>
+	</region>
+</client-cache>

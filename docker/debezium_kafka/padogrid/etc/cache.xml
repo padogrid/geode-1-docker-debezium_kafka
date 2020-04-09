@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://geode.apache.org/schema/cache"
+	xsi:schemaLocation="http://geode.apache.org/schema/cache 
+http://geode.apache.org/schema/cache/cache-1.0.xsd"
+	version="1.0" lock-lease="120" lock-timeout="60" search-timeout="300"
+	is-server="false" copy-on-read="false">
+
+	<!-- cache-server port is assigned by geode-addon at member startup.
+	     If you have a multi-homed machine then make sure to set the bind-address
+	     and hostname-for-clients attributes with the proper IP address. -->
+	<cache-server port="${geode-addon.server.port}"/>
+
+        <region name="inventory">
+                <region name="addresses" refid="PARTITION"></region>
+                <region name="customers" refid="PARTITION"></region>
+                <region name="orders" refid="PARTITION"></region>
+                <region name="products" refid="PARTITION"></region>
+                <region name="products_on_hand" refid="PARTITION"></region>
+        </region>
+</cache>
