@@ -41,9 +41,9 @@ if [ ! -d etc ]; then
 fi
 
 cp -r $GEODE_HOME/lib geode-addon/
-cp $GEODE_ADDON_HOME/lib/geode-addon-core*.jar geode-addon/lib/
-cp $GEODE_ADDON_HOME/plugins/geode-addon-core*.jar geode-addon/plugins/
-cp $GEODE_ADDON_HOME/etc/template-log4j2.properties etc/log4j2.properties
+cp $PADOGRID_HOME/lib/geode-addon-core*.jar geode-addon/lib/
+cp $PADOGRID_HOME/plugins/geode-addon-core*.jar geode-addon/plugins/
+cp $PADOGRID_HOME/etc/template-log4j2.properties etc/log4j2.properties
 
 popd > /dev/null
 
@@ -51,7 +51,7 @@ popd > /dev/null
 # Display build information
 #
 echo ""
-echo "Workspace: $GEODE_ADDON_WORKSPACE"
+echo "Workspace: $PADOGRID_WORKSPACE"
 echo ""
 echo "Build complete"
 echo ""

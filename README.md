@@ -113,10 +113,10 @@ Copy the `cache.xml` and demo data jar files from the `debezium_kafaka` director
 cd_docker geode
 
 # Copy cache.xml
-cp $GEODE_ADDON_WORKSPACE/docker/debezium_kafka/padogrid/etc/cache.xml padogrid/etc/
+cp $PADOGRID_WORKSPACE/docker/debezium_kafka/padogrid/etc/cache.xml padogrid/etc/
 
 # Copy debezium-demo-data-1.0-SNAPSHOT.jar
-cp $GEODE_ADDON_WORKSPACE/docker/debezium_kafka/padogrid/plugins/debezium-demo-data-1.0-SNAPSHOT.jar padogrid/plugins/
+cp $PADOGRID_WORKSPACE/docker/debezium_kafka/padogrid/plugins/debezium-demo-data-1.0-SNAPSHOT.jar padogrid/plugins/
 ```
 
 The `cache.xml` file defines the `inventory` regions that we will need for our demo and the`debezium-demo-data-1.0-SNAPSHOT.jar` file is needed for query services.
