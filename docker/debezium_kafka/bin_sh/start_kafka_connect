@@ -7,4 +7,5 @@ EXECUTABLE="`basename $0`"
 # CONNECT_PLUGIN_PATH is broken in KafkaConnect. It only loads the jar file with the
 # connector class. A wround is to set CLASSPATH.
 # Due to jar conflicts, /kafka/libs/* must be included first in the class path.
-docker run --volume $APP_DIR/geode-addon:/geode-addon -it --rm --name connect -p 8083:8083 -e CONNECT_PLUGIN_PATH=/kafka/connect,/geode-addon/lib,/geode-addon/plugins, -e CLASSPATH=/kafka/libs/*:/geode-addon/lib/*:/geode-addon/plugins/* -e GROUP_ID=1 -e CONFIG_STORAGE_TOPIC=my_connect_configs -e OFFSET_STORAGE_TOPIC=my_connect_offsets -e STATUS_STORAGE_TOPIC=my_connect_statuses --link zookeeper:zookeeper --link kafka:kafka --link mysql:mysql debezium/connect:1.0
+# Set arguments as Docker options ($@)
+docker run $@ --volume $APP_DIR/geode-addon:/geode-addon -it --rm --name connect -p 8083:8083 -e CONNECT_PLUGIN_PATH=/kafka/connect,/geode-addon/lib,/geode-addon/plugins, -e CLASSPATH=/kafka/libs/*:/geode-addon/lib/*:/geode-addon/plugins/* -e GROUP_ID=1 -e CONFIG_STORAGE_TOPIC=my_connect_configs -e OFFSET_STORAGE_TOPIC=my_connect_offsets -e STATUS_STORAGE_TOPIC=my_connect_statuses --link zookeeper:zookeeper --link kafka:kafka --link mysql:mysql debezium/connect:1.0
