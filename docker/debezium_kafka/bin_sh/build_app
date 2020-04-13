@@ -9,9 +9,9 @@ if [ "$HELP" == "true" ]; then
    echo "   ./$EXECUTABLE [-clean] [-?]"
    echo ""
    echo "   Builds the Debezium demo data jar and copies the Geode/GemFire jar files to the"
-   echo "   'geode-addon' directory which is mounted by the Docker Geode/GemFire connector container."
+   echo "   'padogrid' directory which is mounted by the Docker Geode/GemFire connector container."
    echo ""
-   echo "      $APP_DIR/geode-addon/plugins/debezium-demo-data-1.0-SNAPSHOT.jar"
+   echo "      $APP_DIR/padogrid/plugins/debezium-demo-data-1.0-SNAPSHOT.jar"
    echo ""
    echo "Default: ./$EXECUTABLE"
    echo ""
@@ -24,26 +24,26 @@ pushd $APP_DIR > /dev/null
 mvn package clean package
 
 # Copy the geode and geode-addon jar files
-if [ ! -d geode-addon/lib ]; then
-   mkdir -p geode-addon/lib
+if [ ! -d padogrid/lib ]; then
+   mkdir -p padogrid/lib
 fi
-if [ ! -d geode-addon/plugins ]; then
-   mkdir -p geode-addon/plugins
+if [ ! -d padogrid/plugins ]; then
+   mkdir -p padogrid/plugins
 fi
-if [ ! -d geode-addon/log ]; then
-   mkdir -p geode-addon/log
+if [ ! -d padogrid/log ]; then
+   mkdir -p padogrid/log
 fi
-if [ ! -d geode-addon/etc ]; then
-   mkdir -p geode-addon/etc
+if [ ! -d padogrid/etc ]; then
+   mkdir -p padogrid/etc
 fi
 if [ ! -d etc ]; then
    mkdir etc
 fi
 
-cp -r $GEODE_HOME/lib geode-addon/
-cp $PADOGRID_HOME/lib/geode-addon-core*.jar geode-addon/lib/
-cp $PADOGRID_HOME/plugins/geode-addon-core*.jar geode-addon/plugins/
-cp $PADOGRID_HOME/etc/template-log4j2.properties etc/log4j2.properties
+cp -r $GEODE_HOME/lib padogrid/
+cp $PADOGRID_HOME/geode/lib/geode-addon-core*.jar padogrid/lib/
+cp $PADOGRID_HOME/geode/plugins/geode-addon-core*.jar padogrid/plugins/
+cp $PADOGRID_HOME/geode/etc/template-log4j2.properties etc/log4j2.properties
 
 popd > /dev/null
 
@@ -55,5 +55,5 @@ echo "Workspace: $PADOGRID_WORKSPACE"
 echo ""
 echo "Build complete"
 echo ""
-echo "   $APP_DIR/geode-addon/plugins/debezium-demo-data-1.0-SNAPSHOT.jar"
+echo "   $APP_DIR/padogrid/plugins/debezium-demo-data-1.0-SNAPSHOT.jar"
 echo ""

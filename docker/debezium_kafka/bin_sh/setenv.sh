@@ -10,7 +10,7 @@
 
 # App level variables:
 # --------------------
-# APPS_DIR - <geode-addon>/apps dir
+# APPS_DIR - <padogrid-workspace>/apps dir
 # APP_DIR - App base dir
 # APP_ETC_DIR - App etc dir
 # APP_LOG_DIR - App log dir
@@ -19,8 +19,8 @@
 JAVA_OPTS="-Xms256m -Xmx256m"
 
 # GEODE_CLIENT_CONFIG_FILE defaults to etc/client-cache.xml
-GEODE_PROPERTY_FILE="$APP_DIR/geode-addon/etc/client-gemfire.properties"
-GEODE_CLIENT_CONFIG_FILE="$APP_DIR/geode-addon/etc/client-cache.xml"
+GEODE_PROPERTY_FILE="$APP_DIR/padogrid/etc/client-gemfire.properties"
+GEODE_CLIENT_CONFIG_FILE="$APP_DIR/padogrid/etc/client-cache.xml"
 JAVA_OPTS="$JAVA_OPTS -DgemfirePropertyFile=$GEODE_PROPERTY_FILE \
 -Dgemfire.cache-xml-file=$GEODE_CLIENT_CONFIG_FILE"
 
