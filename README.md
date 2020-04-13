@@ -8,6 +8,8 @@ This bundle integrates Geode/GemFire with Debezium for ingesting initial data an
 install_bundle -download geode-1-docker-debezium_kafka
 ```
 
+:exclamation: If you are running this demo on WSL, make sure your workspace is on a shared folder. The Docker volume it creates will not be visible otherwise.
+
 ## Use Case
 
 This use case ingests data changes made in the MySQL database into a Geode/GemFire cluster via Kafka connectors: the Debezium MySQL source connector and the `geode-addon` Debezium sink connector.
