@@ -60,8 +60,8 @@ padogrid/
 │   └── ...
 ├── log
 └── plugins
-    ├── debezium-demo-data-1.0-SNAPSHOT.jar
-    └── geode-addon-core-0.9.1-SNAPSHOT-tests.jar
+    ├── geode-addon-core-0.9.1-SNAPSHOT-tests.jar
+    └── geode-addon-debezium_kafka-1.0.0.jar
 ```
 
 
@@ -86,14 +86,14 @@ If `host.docker.internal` is not defined then you will need to use the host IP a
 create_docker -?
 ```
 
-If you are using a host IP other than `host.docker.internal` then you must also make the change in the Debezium Geode/GemFire connector configuration file as follows.
+If you are using a host IP other than `host.docker.internal` then you must also make the same change in the Debezium Geode/GemFire connector configuration file.
 
 ```console
 cd_docker debezium_kafka
 vi padogrid/etc/client-cache.xml
 ```
 
-Replace `host.docker.internal` in `geode-client.xml` with your host IP address.
+Replace `host.docker.internal` in `geode-client.xml` with your host IP address if are using another host IP.
 
 ```xml
 <client-cache ...>
@@ -115,18 +115,19 @@ cd_docker geode
 # Copy cache.xml
 cp $PADOGRID_WORKSPACE/docker/debezium_kafka/padogrid/etc/cache.xml padogrid/etc/
 
-# Copy debezium-demo-data-1.0-SNAPSHOT.jar
-cp $PADOGRID_WORKSPACE/docker/debezium_kafka/padogrid/plugins/debezium-demo-data-1.0-SNAPSHOT.jar padogrid/plugins/
+# Copy debezium-demo-data-1.0.0.jar
+cp $PADOGRID_WORKSPACE/docker/debezium_kafka/padogrid/plugins/geode-addon-debezium_kafka-1.0.0.jar padogrid/plugins/
 ```
 
-The `cache.xml` file defines the `inventory` regions that we will need for our demo and the`debezium-demo-data-1.0-SNAPSHOT.jar` file is needed for query services.
+The `cache.xml` file defines the `inventory` regions that we will need for our demo and the`geode-addon-debezium_kafka-1.0.0.jar` file is needed for query services.
 
 ## Starting Docker Containers
 
-There are numerous Docker containers to this demo. We'll first start the Geode/GemFire cluster containers and then proceed with the Debezium containers. For this demo, we intentionally made each container to run in the foreground so that you can view the log events. You will need to launch a total of eight (8) terminals. If you have a screen splitter such as Windows Terminal, it will make things easier.
+There are numerous Docker containers to this demo. We'll first start the Geode/GemFire cluster containers and then proceed with the Debezium containers. By default, the scripts provided run the containers in the foreground so that you can view the log events. You will need to launch a total of eight (8) terminals. If you have a screen splitter such as Windows Terminal, it will make things easier.
 
 ![WSL Terminal Screenshot](/images/wsl-terminal-inventory.png)
 
+You can also run some of the scripts in the background by including the '-d' option. These scripts are mentioned below.
 
 ### Start Geode/GemFire Containers
 
@@ -144,28 +145,28 @@ Launch six (6) terminals and run each script from their own terminal as shown be
 ```console
 cd_docker debezium_kafka; cd bin_sh
 
-# 1. Start Zookeeper
+# 1. Start Zookeeper (include '-d' to run it in the background)
 ./start_zookeeper
 
-# 2. Start Kafka
+# 2. Start Kafka (include '-d' to run it in the background)
 ./start_kafka
 
-# 3. Start MySQL database
+# 3. Start MySQL database (include '-d' to run it in the background)
 ./start_mysql
 
-# 4. Start MySQL CLI
-./start_mysql_cli
-
-# 5. Start Kafka Connect
+# 4. Start Kafka Connect (include '-d' to run it in the background)
 ./start_kafka_connect
 
-# 6. Start topic watcher
+# 5. Start topic watcher
 ./watch_topic_customers
+
+# 6. Start MySQL CLI
+./start_mysql_cli
 ```
 
 ### Register Kafka Connect via REST API
 
-There are two (2) Kafka connectors that we must register. The MySQL connector is provided by Debezium and the Geode/GemFire connector is part of the `padogrid` distribution. 
+There are two (2) Kafka connectors that we must register. The MySQL connector is provided by Debezium and the Geode/GemFire connector is part of the PadoGrid distribution. 
 
 ```console
 cd_docker debezium_kafka; cd bin_sh
@@ -258,7 +259,7 @@ Rows   : 4
 
 ### Browse Region Contents from Pulse
 
-Pulse URL: http://localhost:7070/pulse
+**Pulse URL:** http://localhost:7070/pulse
 
 ![Pulse Screenshot](/images/pulse-inventory-customers.png)
 
