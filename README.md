@@ -5,7 +5,7 @@ This bundle integrates Geode/GemFire with Debezium for ingesting initial data an
 ## Installing Bundle
 
 ```console
-install_bundle -download geode-1-docker-debezium_kafka
+install_bundle -download bundle-geode-1-docker-debezium_kafka
 ```
 
 ## Use Case

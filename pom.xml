@@ -6,9 +6,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.apache.geode.addon</groupId>
-	<artifactId>geode-1-docker-debezium_kafka</artifactId>
+	<artifactId>bundle-geode-1-docker-debezium_kafka</artifactId>
 	<packaging>pom</packaging>
-	<name>geode-1-docker-debezium_kafka</name>
+	<name>${project.artifactId}</name>
 	<version>1.0.0</version>
 	<description>Data ingestion of CDC records via Debezium Kafka connector on Docker containers</description>
 
