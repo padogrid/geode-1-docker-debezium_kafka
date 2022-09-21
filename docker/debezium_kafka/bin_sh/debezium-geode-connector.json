@@ -8,7 +8,7 @@
         "gemfire.cache-xml-file": "/padogrid/etc/client-cache.xml",
         "region": "/inventory/customers",
         "smt.enabled": false,
-        "debug.enabled": false,
+        "debug.enabled": true,
         "delete.enabled": true,
         "key.class": "java.lang.String",
         "key.column.names": "id",

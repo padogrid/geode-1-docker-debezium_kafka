@@ -24,7 +24,7 @@ GEODE_CLIENT_CONFIG_FILE="$APP_DIR/padogrid/etc/client-cache.xml"
 JAVA_OPTS="$JAVA_OPTS -DgemfirePropertyFile=$GEODE_PROPERTY_FILE \
 -Dgemfire.cache-xml-file=$GEODE_CLIENT_CONFIG_FILE"
 
-CLASSPATH="$CLASSPATH:$APP_DIR/padogrid/plugins/*"
+CLASSPATH="$CLASSPATH:$APP_DIR/padogrid/plugins/*:$APP_DIR/padogrid/lib/*"
 if [[ ${OS_NAME} == CYGWIN* ]]; then
    CLASSPATH="$(cygpath -wp "$CLASSPATH")"
 fi

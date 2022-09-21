@@ -42,7 +42,7 @@ All the commands provided in the tutorial are wrapped in the scripts found in th
 We must first build the demo by running the `build_app` command as shown below. This command compiles and packages the `PdxSerializable` data (domain) classes found in the source directory `src`. It also copies the Geode/GemFire and `geode-addon-core` jar files to the Docker container mounted volume in the `padogrid` directory so that the Geode/GemFire Debezium Kafka connector can include them in its class path.
 
 ```bash
-cd_docker debezium_kafka; cd bin_sh
+cd_docker debezium_kafka/bin_sh
 ./build_app
 ```
 
@@ -91,7 +91,7 @@ Let's create a Geode/GemFire cluster to run on Docker containers.
 # If host.docker.internal is not accessible then replace it with another host IP
 # that you can access from the host OS. On macOS, this is typically your host OS's
 # host name.
-create_docker -cluster geode -host host.docker.internal
+create_docker -product geode -cluster geode -host host.docker.internal
 cd_docker geode
 ```
 
@@ -152,7 +152,7 @@ docker-compose up
 Launch six (6) terminals and run each script from their own terminal as shown below. Each script must be run from their own terminal as they will block and display log messages.
 
 ```bash
-cd_docker debezium_kafka; cd bin_sh
+cd_docker debezium_kafka/bin_sh
 
 # 1. Start Zookeeper (include '-d' to run it in the background)
 ./start_zookeeper
@@ -178,7 +178,7 @@ cd_docker debezium_kafka; cd bin_sh
 There are two (2) Kafka connectors that we must register. The MySQL connector is provided by Debezium and the Geode/GemFire connector is part of the PadoGrid distribution. 
 
 ```bash
-cd_docker debezium_kafka; cd bin_sh
+cd_docker debezium_kafka/bin_sh
 ./register_mysql_connector
 ./register_debezium_geode_connector
 ```
@@ -276,7 +276,7 @@ Rows   : 4
 
 ```bash
 # Shutdown Debezium containers
-cd_docker debezium_kafka; cd bin_sh
+cd_docker debezium_kafka/bin_sh
 ./cleanup
 
 # Shutdown Geode/GemFire containers
