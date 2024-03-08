@@ -15,7 +15,7 @@ This bundle integrates Geode with Debezium for ingesting initial data and CDC re
 install_bundle -download bundle-geode-1-docker-debezium_kafka
 ```
 
-:exclamation: If you are running this demo on WSL, make sure your workspace is on a shared folder. The Docker volume it creates will not be visible otherwise.
+❗ If you are running this bundle on WSL, make sure your workspace is on a shared folder. The Docker volume it creates will not be visible outside of WSL otherwise.
 
 ## Use Case
 
