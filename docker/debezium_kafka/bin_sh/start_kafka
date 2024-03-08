@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 # Set arguments as Docker options ($@)
-docker run $@ -it --rm --name kafka -p 9092:9092 --link zookeeper:zookeeper debezium/kafka:1.0
+docker run $@ -it --rm --name kafka --network my_network -e ZOOKEEPER_CONNECT=zookeeper -p 9092:9092 debezium/kafka:1.0

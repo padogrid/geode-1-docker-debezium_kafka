@@ -5,9 +5,9 @@
 <!-- Platforms -->
 [![PadoGrid 1.x](https://github.com/padogrid/padogrid/wiki/images/padogrid-padogrid-1.x.drawio.svg)](https://github.com/padogrid/padogrid/wiki/Platform-PadoGrid-1.x) [![Host OS](https://github.com/padogrid/padogrid/wiki/images/padogrid-host-os.drawio.svg)](https://github.com/padogrid/padogrid/wiki/Platform-Host-OS)
 
-# Debezium-Kafka Geode/GemFire Connector
+# Debezium-Kafka Geode Connector
 
-This bundle integrates Geode/GemFire with Debezium for ingesting initial data and CDC records from MySQL into a Geode/GemFire cluster via a Kafka sink connector included in the `padogrid` distribution. It supports inserts, updates and deletes.
+This bundle integrates Geode with Debezium for ingesting initial data and CDC records from MySQL into a Geode cluster via a Kafka sink connector included in the `padogrid` distribution. It supports inserts, updates and deletes.
 
 ## Installing Bundle
 
@@ -19,7 +19,7 @@ install_bundle -download bundle-geode-1-docker-debezium_kafka
 
 ## Use Case
 
-This use case ingests data changes made in the MySQL database into a Geode/GemFire cluster via Kafka connectors: the Debezium MySQL source connector and the `geode-addon` Debezium sink connector.
+This use case ingests data changes made in the MySQL database into a Geode cluster via Kafka connectors: the Debezium MySQL source connector and the `geode-addon` Debezium sink connector.
 
 ![Debezium-Kafka Diagram](images/debezium-kafka.png)
 
@@ -41,7 +41,7 @@ All the commands provided in the tutorial are wrapped in the scripts found in th
 
 ## Building Demo
 
-We must first build the demo by running the `build_app` command as shown below. This command compiles and packages the `PdxSerializable` data (domain) classes found in the source directory `src`. It also copies the Geode/GemFire and `geode-addon-core` jar files to the Docker container mounted volume in the `padogrid` directory so that the Geode/GemFire Debezium Kafka connector can include them in its class path.
+We must first build the demo by running the `build_app` command as shown below. This command compiles and packages the `PdxSerializable` data (domain) classes found in the source directory `src`. It also copies the Geode and `geode-addon-core` jar files to the Docker container mounted volume in the `padogrid` directory so that the Geode Debezium Kafka connector can include them in its class path.
 
 ```bash
 cd_docker debezium_kafka/bin_sh
@@ -65,69 +65,65 @@ padogrid/
 │   │   └── client-gemfire.properties
 ├── lib
 │   ├── ...
-│   ├── geode-addon-core-0.9.5-SNAPSHOT.jar
+│   ├── geode-addon-core-1.0.0.jar
+│   ├── geode-addon-core-1.0.0.jar
+│   ├── ...
+│   ├── padogrid-common-1.0.0.jar
+│   ├── padogrid-tools-1.0.0.jar
 │   └── ...
 ├── log
 └── plugins
-    ├── geode-addon-core-0.9.5-SNAPSHOT-tests.jar
+    ├── geode-addon-core-1.0.0-tests.jar
     └── geode-addon-debezium_kafka-1.0.0.jar
 ```
 
-## Creating Geode/GemFire Docker Containers
-
-If you are running Docker Desktop, then the host name, `host.docker.internal`, is accessible from the containers as well as the host machine. You can run the `ping` command to check the host name.
+## Creating Geode Docker Containers
 
 ![Terminal Geode](images/terminal.png) Terminal Geode
 
-```bash
-ping host.docker.internal
-```
-
-If `host.docker.internal` is not defined then you will need to use the host IP address that can be accessed from both the Docker containers and the host machine. Run `create_docker -?` or `man create_docker` to see the usage.
-
-![Terminal Geode](images/terminal.png) Terminal Geode
+The `create_docker` command creates a Docker Compose environment for running PadoGrid-supported products such as Geode. See the usages by specifying the `-?` option.
 
 ```bash
 create_docker -?
 ```
 
-Let's create a Geode/GemFire cluster to run on Docker containers.
+Let's create a Geode cluster to run on Docker containers.
 
 ![Terminal Geode](images/terminal.png) Terminal Geode
 
 ```bash
-# Make sure to specify the host IP that you can access from the containers.
-# If host.docker.internal is not accessible then replace it with another host IP
-# that you can access from the host OS. On macOS, this is typically your host OS's
-# host name.
-create_docker -product geode -cluster geode -host host.docker.internal
+# First, create 'my_network' which we will use for all containers
+docker network create my_network
+
+# Create a Geode cluster that joins the network we just created
+create_docker -product geode -cluster geode -network my_network
 cd_docker geode
 ```
 
-If you are using a host IP other than `host.docker.internal` then you must also make the same change in the Debezium Geode/GemFire connector configuration file.
-
 ![Terminal Geode](images/terminal.png) Terminal Geode
+
+The Kafka Connect container listens on Kafka streams for database updates and converts them to Geode objects before updating the Geode cluster. Take a look at the `client-cache.xml` file which is loaded by the Kafka Connect container to connect to the Geode cluster. As you can see from below, the locator host is set to `geode-locator-1` which is the host name of the locator set by Docker Compose.
 
 ```bash
 cd_docker debezium_kafka
-vi padogrid/etc/client-cache.xml
+cat padogrid/etc/client-cache.xml
 ```
 
-Replace `host.docker.internal` in `geode-client.xml` with your host IP address if are using another host IP.
+Output:
 
 ```xml
 <client-cache ...>
    ...
    <pool name="serverPool">
-      <locator host="host.docker.internal" port="10334" />
+      <locator host="geode-locator-1" port="10334" />
    </pool>
    ...
 </client-cache>
 ```
 
-### Configuring Geode/GemFire Cluster
+### Configuring Geode Cluster
 
-Copy the `cache.xml` and demo data jar files from the `debezium_kafaka` directory to the Geode/GemFire Docker cluster directory as follows.
+Copy the `cache.xml` and demo data jar files from the `debezium_kafaka` directory to the Geode Docker cluster directory as follows.
 
 ![Terminal Geode](images/terminal.png) Terminal Geode
 
@@ -145,15 +141,15 @@ The `cache.xml` file defines the `inventory` regions that we will need for our d
 
 ## Starting Docker Containers
 
-There are numerous Docker containers to this demo. We'll first start the Geode/GemFire cluster containers and then proceed with the Debezium containers. By default, the scripts provided run the containers in the foreground so that you can view the log events. You will need to launch a total of eight (8) terminals. If you have a screen splitter such as Windows Terminal, it will make things easier.
+There are numerous Docker containers to this demo. We'll first start the Geode cluster containers and then proceed with the Debezium containers. By default, the scripts provided run the containers in the foreground so that you can view the log events. You will need to launch a total of eight (8) terminals. If you have a screen splitter such as Windows Terminal, it will make things easier.
 
 ![WSL Terminal Screenshot](images/wsl-terminal-inventory.png)
 
 You can also run some of the scripts in the background by including the '-d' option. These scripts are mentioned below.
 
-### Start Geode/GemFire Containers
+### Start Geode Containers
 
-Start the `geode` Geode/GemFire cluster containers from a new terminal.
+Start the `geode` cluster containers from a new terminal.
 
 ![Terminal Geode](images/terminal.png) Terminal Geode
 
@@ -192,7 +188,7 @@ cd_docker debezium_kafka/bin_sh
 
 ### Register Kafka Connect via REST API
 
-There are two (2) Kafka connectors that we must register. The MySQL connector is provided by Debezium and the Geode/GemFire connector is part of the PadoGrid distribution. From a new terminal run the following.
+There are two (2) Kafka connectors that we must register. The MySQL connector is provided by Debezium and the Geode connector is part of the PadoGrid distribution. From a new terminal run the following.
 
 ![Terminal Driver](images/terminal.png) Terminal Driver
 
@@ -225,7 +221,7 @@ The last command should display the inventory connector that we registered previ
 
 ### MySQL CLI
 
-Using the MySQL CLI, you can change table contents. The changes you make will be captured in the form of change events by the Debezium source connector. The Geode/GemFire sink connector in turn receives the change events, transforms them into data objects and updates (or deletes) the assigned map, i.e., `inventory/customers`.
+Using the MySQL CLI, you can change table contents. The changes you make will be captured in the form of change events by the Debezium source connector. The Geode sink connector in turn receives the change events, transforms them into data objects and updates (or deletes) the assigned map, i.e., `inventory/customers`.
 
 ![Terminal 6](images/terminal.png) Terminal 6
 
@@ -309,9 +305,12 @@ Rows   : 4
 cd_docker debezium_kafka/bin_sh
 ./cleanup
 
-# Shutdown Geode/GemFire containers
+# Shutdown Geode containers
 cd_docker geode
 docker compose down
+
+# Remove network
+docker network rm my_network
 
 # Prune all stopped containers 
 docker container prune
