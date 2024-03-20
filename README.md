@@ -26,8 +26,7 @@ This use case ingests data changes made in the MySQL database into a Geode clust
 ## Required Software
 
 - Docker
-- Docker Compose
-- Maven
+- Maven 3.x
 
 ## Optional Software
 
