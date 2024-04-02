@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
 # Set arguments as Docker options ($@)
-docker run $@ -it --rm --name zookeeper --network my_network -p 2181:2181 -p 2888:2888 -p 3888:3888 debezium/zookeeper:1.0
+echo docker run $@ -it --rm --name zookeeper --network my_network -p 2181:2181 -p 2888:2888 -p 3888:3888 debezium/zookeeper:2.4
+docker run $@ -it --rm --name zookeeper --network my_network -p 2181:2181 -p 2888:2888 -p 3888:3888 debezium/zookeeper:2.4

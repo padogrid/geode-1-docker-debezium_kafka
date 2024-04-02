@@ -27,6 +27,7 @@ This use case ingests data changes made in the MySQL database into a Geode clust
 
 - Docker
 - Maven 3.x
+- Geode 1.x
 
 ## Optional Software
 
@@ -34,13 +35,29 @@ This use case ingests data changes made in the MySQL database into a Geode clust
 
 ## Debezium Tutorial
 
-The demo is based on the Debezium 1.x tutorial provided by [Debezium](https://debezium.io). Unfortunately, the tutorial is no longer available from Debezium.
+The demo follows the Debezium Tutorial steps shown in the link below.
+
+<https://debezium.io/documentation/reference/2.3/tutorial.html#registering-connector-monitor-inventory-database>
 
 All the commands provided in the tutorial are wrapped in the scripts found in the `bin_sh` directory. We'll use these scripts to simplify the demo.
 
 ## Building Demo
 
-We must first build the demo by running the `build_app` command as shown below. This command compiles and packages the `PdxSerializable` data (domain) classes found in the source directory `src`. It also copies the Geode and `geode-addon-core` jar files to the Docker container mounted volume in the `padogrid` directory so that the Geode Debezium Kafka connector can include them in its class path.
+✏️  *This bundle builds the demo enviroment based on the Geode versions in your workspace. Make sure your workspace has been configured with the desired versions before building the demo environment.*
+
+First, change your cluster context to a Geode cluster. This is required in order to configure the Geode Docker containers.
+
+![Terminal Geode](images/terminal.png) Terminal Geode
+
+```bash
+# Create a Geode cluster if it does not already exist.
+create_cluster -product geode
+
+# Switch context
+switch_cluster mygeode
+```
+
+Now, build the demo by running the `build_app` command as shown below. This command compiles and packages the `PdxSerializable` data (domain) classes found in the source directory `src`. It also copies the Geode and `geode-addon-core` jar files to the Docker container mounted volume in the `padogrid` directory so that the Geode Debezium Kafka connector can include them in its class path.
 
 ```bash
 cd_docker debezium_kafka/bin_sh
@@ -80,7 +97,7 @@ padogrid/
 
 ![Terminal Geode](images/terminal.png) Terminal Geode
 
-The `create_docker` command creates a Docker Compose environment for running PadoGrid-supported products such as Geode. See the usages by specifying the `-?` option.
+The `create_docker` command creates a Docker Compose environment for running PadoGrid-supported products such as Geode. See the usage by specifying the `-?` option.
 
 ```bash
 create_docker -?
