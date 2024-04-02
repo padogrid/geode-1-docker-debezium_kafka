@@ -10,7 +10,7 @@
     "database.password": "dbz",
     "database.server.id": "184054",
     "database.server.name": "dbserver1",
-    "database.whitelist": "inventory",
+    "database.include.list": "inventory",
     "schema.history.internal.kafka.topic": "dbhistory.inventory",
     "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
     "transforms": "route",
